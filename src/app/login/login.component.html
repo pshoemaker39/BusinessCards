@@ -1,1 +1,11 @@
-<p>login works!</p>
+<h1>Login</h1>
+<div *ngIf="auth.user$ | async as user; else login">
+  {{ user | json }}
+  <hr />
+</div>
+
+<ng-template #login>
+  <button class="button" (click)="auth.googleSignIn()">
+    Login With Google
+  </button>
+</ng-template>
