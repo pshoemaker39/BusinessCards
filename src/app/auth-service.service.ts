@@ -8,6 +8,7 @@ import {
 import { Observable, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { User } from "../user.model";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root"
@@ -15,7 +16,11 @@ import { User } from "../user.model";
 export class AuthServiceService {
   user$: Observable<User>;
 
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private afs: AngularFirestore,
+    private router: Router
+  ) {
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
@@ -44,5 +49,10 @@ export class AuthServiceService {
     };
 
     return userRef.set(data, { merge: true });
+  }
+
+  async signOut() {
+    await this.afAuth.auth.signOut();
+    this.router.navigate(["/"]);
   }
 }
