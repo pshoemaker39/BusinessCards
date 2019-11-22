@@ -9,6 +9,10 @@
       *ngIf="auth.user$ | async as user; then authenticated; else login"
     ></div>
     <ng-template #authenticated>
+      <button mat-button [routerLink]="['new']" routerLinkActive="active">
+        New Business Card
+      </button>
+
       <button
         *ngIf="auth.user$ | async as user"
         mat-button
