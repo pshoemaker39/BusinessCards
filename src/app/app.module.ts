@@ -30,6 +30,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatCardModule } from "@angular/material/card";
 import { ReactiveFormsModule } from "@angular/forms";
+import { BusinessCardService } from "./business-card.service";
 
 @NgModule({
   declarations: [
@@ -60,7 +61,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     MatCardModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [BusinessCardService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

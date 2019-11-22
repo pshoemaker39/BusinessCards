@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
+import { BusinessCardService } from "../business-card.service";
 
 @Component({
   selector: "app-new-business-card",
@@ -90,12 +91,17 @@ export class NewBusinessCardComponent {
     { name: "Wyoming", abbreviation: "WY" }
   ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private businessCardService: BusinessCardService
+  ) {}
 
   onSubmit() {
     //bc service
     //route back to home
     console.log(this.businessCard.value);
-    alert("Thanks!");
+    this.businessCardService.addCard(this.businessCard);
+    console.log(`cards: ${this.businessCardService.getCards()}`);
+    // alert("Thanks!");
   }
 }
