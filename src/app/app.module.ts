@@ -25,6 +25,12 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { firebaseConfig } from "../environments/firebaseConfig";
+import { TestComponentComponent } from './test-component/test-component.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -37,7 +43,8 @@ import { firebaseConfig } from "../environments/firebaseConfig";
     LoginComponent,
     LogoutComponent,
     NotFoundComponent,
-    HomeComponent
+    HomeComponent,
+    TestComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +54,13 @@ import { firebaseConfig } from "../environments/firebaseConfig";
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    CommonModule
+    CommonModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCardModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
