@@ -31,6 +31,10 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatCardModule } from "@angular/material/card";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BusinessCardService } from "./business-card.service";
+import { TestTableComponent } from './test-table/test-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -43,7 +47,8 @@ import { BusinessCardService } from "./business-card.service";
     LoginComponent,
     LogoutComponent,
     NotFoundComponent,
-    HomeComponent
+    HomeComponent,
+    TestTableComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +64,10 @@ import { BusinessCardService } from "./business-card.service";
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [BusinessCardService],
   bootstrap: [AppComponent]
