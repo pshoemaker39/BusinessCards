@@ -1,26 +1,80 @@
 import { Injectable } from "@angular/core";
-import { BusinessCardComponent } from "./business-card/business-card.component";
-import { BusinessCardsComponent } from "./business-cards/business-cards.component";
+import { BusinessCard } from "./models/businessCard.model";
+import { auth } from "firebase/app";
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+  AngularFirestoreDocument
+} from "@angular/fire/firestore";
+import { Observable, of } from "rxjs";
+import { switchMap } from "rxjs/operators";
+import { Router } from "@angular/router";
+import { User } from "./models/user.model";
+import { AuthServiceService } from "./auth-service.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class BusinessCardService {
-  card: BusinessCardComponent;
-  cards: BusinessCardsComponent[];
+  card$: Observable<BusinessCard>;
+  uid$: Observable<User>;
+  id: string;
 
-  constructor() {
-    this.cards = [];
-  }
+  constructor(
+    private afs: AngularFirestore,
+    private router: Router,
+    private auth: AuthServiceService
+  ) {}
 
+  confirmUID() {}
   addCard(businessCardData) {
-    //TODO: use business card component to create busines card from data
-    this.cards.push(businessCardData);
-    console.log("Card Stored", this.cards.length);
+    this.auth.getUser().subscribe(user => {
+      this.afs
+        .collection(`users/${user.uid}/businessCards`)
+        .add(businessCardData);
+    });
   }
 
-  getCards() {
-    console.log("Getting Cards");
-    return this.cards;
+  getCards(cb) {
+    this.auth.getUser().subscribe(user => {
+      this.afs
+        .collection(`users/${user.uid}/businessCards`)
+        .valueChanges()
+        .subscribe(cards => {
+          cb(cards);
+        });
+    });
   }
 }
+
+// createCard({
+//   uid,
+//   company,
+//   position,
+//   firstName,
+//   lastName,
+//   address,
+//   address2,
+//   city,
+//   state,
+//   postalCode
+// }: BusinessCard) {
+//   const businessCardRef: AngularFirestoreDocument<BusinessCard> = this.afs.doc(
+//     `cards`
+//   );
+
+//   const data = {
+//     uid,
+//     company,
+//     position,
+//     firstName,
+//     lastName,
+//     address,
+//     address2,
+//     city,
+//     state,
+//     postalCode
+//   };
+
+//   return businessCardRef.set(data, { merge: true });
+// }

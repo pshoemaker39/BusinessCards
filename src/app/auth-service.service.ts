@@ -3,18 +3,21 @@ import { auth } from "firebase/app";
 import { AngularFireAuth } from "@angular/fire/auth";
 import {
   AngularFirestore,
+  AngularFirestoreCollection,
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import { Observable, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
-import { User } from "../user.model";
+import { User } from "./models/user.model";
 import { Router } from "@angular/router";
+import { $ } from "protractor";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthServiceService {
   user$: Observable<User>;
+  uid: string;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -24,12 +27,18 @@ export class AuthServiceService {
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
+          this.uid = user.uid;
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null);
         }
       })
     );
+  }
+
+  getUser() {
+    //return this.uid;
+    return this.user$;
   }
 
   async googleSignIn() {
@@ -47,7 +56,7 @@ export class AuthServiceService {
       uid,
       email
     };
-
+    this.uid = data.uid;
     return userRef.set(data, { merge: true });
   }
 

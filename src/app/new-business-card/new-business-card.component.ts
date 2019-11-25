@@ -99,9 +99,9 @@ export class NewBusinessCardComponent {
   onSubmit() {
     //bc service
     //route back to home
-    console.log(this.businessCard.value);
-    this.businessCardService.addCard(this.businessCard);
-    console.log(`cards: ${this.businessCardService.getCards()}`);
+    // console.log(this.businessCard.value);
+    this.businessCardService.addCard(this.businessCard.value);
+    // console.log(`cards: ${this.businessCardService.getCards()}`);
     // alert("Thanks!");
   }
 }

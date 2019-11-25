@@ -1,3 +1,14 @@
 <ng-container>
-  <div *ngFor="let card of businessCards">Company: {{ card }}</div>
+  <div *ngFor="let card of businessCards">
+    <ul>
+      <li>Company: {{ card.company }}</li>
+      <li>Position: {{ card.position }}</li>
+      <li>First Name: {{ card.firstName }}</li>
+      <li>Last Name: {{ card.lastName }}</li>
+      <li>
+        Street Address: {{ card.address }} City: {{ card.city }} State:
+        {{ card.state }}
+      </li>
+    </ul>
+  </div>
 </ng-container>

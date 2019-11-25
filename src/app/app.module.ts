@@ -24,6 +24,7 @@ const Material = [MatToolbarModule, MatButtonModule];
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFirestoreCollection } from "@angular/fire/firestore";
 import { firebaseConfig } from "../environments/firebaseConfig";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
@@ -31,10 +32,12 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatCardModule } from "@angular/material/card";
 import { ReactiveFormsModule } from "@angular/forms";
 import { BusinessCardService } from "./business-card.service";
-import { TestTableComponent } from './test-table/test-table.component';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import { TestTableComponent } from "./test-table/test-table.component";
+import { MatTableModule } from "@angular/material/table";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSortModule } from "@angular/material/sort";
+import { from } from "rxjs";
+import { AuthServiceService } from "./auth-service.service";
 
 @NgModule({
   declarations: [
@@ -69,7 +72,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatPaginatorModule,
     MatSortModule
   ],
-  providers: [BusinessCardService],
+  providers: [BusinessCardService, AuthServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
