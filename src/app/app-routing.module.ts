@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "new", component: NewBusinessCardComponent },
   { path: "cards", component: BusinessCardsComponent },
+  { path: "search", component: BusinessCardsComponent },
   { path: "test", component: TestTableComponent },
   { path: "**", redirectTo: "/home" }
 ];

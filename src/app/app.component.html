@@ -13,6 +13,14 @@
         New Business Card
       </button>
 
+      <button mat-button [routerLink]="['cards']" routerLinkActive="active">
+        List Business Cards
+      </button>
+
+      <button mat-button [routerLink]="['search']" routerLinkActive="active">
+        Search Business Cards
+      </button>
+
       <button
         *ngIf="auth.user$ | async as user"
         mat-button
