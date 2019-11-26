@@ -1,31 +1,47 @@
-<div class="row">
-  <form [formGroup]="nameSearch" novalidate (ngSubmit)="getCardsByName()">
-    <mat-form-field class="full-width">
-      <input
-        matInput
-        placeholder="Person to search"
-        formControlName="personName"
-      />
-    </mat-form-field>
+<mat-card-header>
+  <mat-card-title>Search Cards</mat-card-title>
+</mat-card-header>
+<form [formGroup]="nameSearch" novalidate (ngSubmit)="getCardsByName()">
+  <!-- <div flex-xs flex-gt-xs="40" layout="column" layout-align="center center"> -->
+  <mat-card class="shipping-card">
+    <mat-card-content>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Person to search"
+          formControlName="personName"
+        />
+      </mat-form-field>
 
-    <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
-    </mat-card-actions>
-  </form>
-  <form [formGroup]="companySearch" novalidate (ngSubmit)="getCardsByCompany()">
-    <mat-form-field class="full-width">
-      <input
-        matInput
-        placeholder="Company to search"
-        formControlName="companyName"
-      />
-    </mat-form-field>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit">
+          Search Person
+        </button>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
+</form>
+<form [formGroup]="companySearch" novalidate (ngSubmit)="getCardsByCompany()">
+  <!-- <div flex-xs flex-gt-xs="40" layout="column" layout-align="center center"> -->
+  <mat-card class="shipping-card">
+    <mat-card-content>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Company to search"
+          formControlName="companyName"
+        />
+      </mat-form-field>
 
-    <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
-    </mat-card-actions>
-  </form>
-</div>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit">
+          Search Company
+        </button>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
+</form>
+
 <ng-container>
   <div *ngFor="let card of businessCards | async">
     <ul>

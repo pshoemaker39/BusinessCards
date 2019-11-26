@@ -1,10 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { BusinessCardService } from "../business-card.service";
-import { BusinessCard } from "../models/businessCard.model";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 import { AuthServiceService } from "../auth-service.service";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
 
 @Component({
   selector: "app-business-cards",
@@ -14,6 +12,13 @@ import { FormBuilder, Validators } from "@angular/forms";
 export class BusinessCardsComponent implements OnInit {
   businessCards: Observable<any[]>;
   db: AngularFirestore;
+  displayedColumns: string[] = [
+    "company",
+    "position",
+    "firstName",
+    "lastName",
+    "image"
+  ];
 
   nameSearch = this.fb.group({
     personName: null
@@ -30,6 +35,7 @@ export class BusinessCardsComponent implements OnInit {
   ) {
     this.db = db;
     const uid = this.auth.getUser();
+
     this.businessCards = this.db
       .collection(`users/${uid}/businessCards`)
       .valueChanges({ idField: "customIdName" });
