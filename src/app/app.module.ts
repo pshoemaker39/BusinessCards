@@ -38,6 +38,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { from } from "rxjs";
 import { AuthServiceService } from "./auth-service.service";
+import { WebcamModule } from "ngx-webcam";
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { AuthServiceService } from "./auth-service.service";
     ReactiveFormsModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    WebcamModule
   ],
   providers: [BusinessCardService, AuthServiceService],
   bootstrap: [AppComponent]

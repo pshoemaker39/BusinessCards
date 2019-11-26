@@ -6,6 +6,7 @@ import { HomeComponent } from "./home/home.component";
 import { LoginComponent } from "./login/login.component";
 import { NewBusinessCardComponent } from "./new-business-card/new-business-card.component";
 import { BusinessCardsComponent } from "./business-cards/business-cards.component";
+import { WebCamComponent } from "./web-cam/web-cam.component";
 import { TestTableComponent } from "./test-table/test-table.component";
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "new", component: NewBusinessCardComponent },
   { path: "new/:id", component: NewBusinessCardComponent },
+  { path: "cam", component: WebCamComponent },
   { path: "cards", component: BusinessCardsComponent },
   { path: "search", component: BusinessCardsComponent },
   { path: "test", component: TestTableComponent },
