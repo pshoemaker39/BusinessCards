@@ -4,6 +4,7 @@ import { BusinessCard } from "../models/businessCard.model";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 import { AuthServiceService } from "../auth-service.service";
+import { FormBuilder, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-business-cards",
@@ -14,7 +15,19 @@ export class BusinessCardsComponent implements OnInit {
   businessCards: Observable<any[]>;
   db: AngularFirestore;
 
-  constructor(db: AngularFirestore, private auth: AuthServiceService) {
+  nameSearch = this.fb.group({
+    personName: null
+  });
+
+  companySearch = this.fb.group({
+    companyName: null
+  });
+
+  constructor(
+    db: AngularFirestore,
+    private auth: AuthServiceService,
+    private fb: FormBuilder
+  ) {
     this.db = db;
     this.auth.getUser().subscribe(user => {
       this.businessCards = this.db
@@ -27,7 +40,17 @@ export class BusinessCardsComponent implements OnInit {
     this.auth.getUser().subscribe(user => {
       this.businessCards = this.db
         .collection(`users/${user.uid}/businessCards`, ref =>
-          ref.where("firstName", "==", "Price")
+          ref.where("firstName", "==", this.nameSearch.value.personName)
+        )
+        .valueChanges({ idField: "customIdName" });
+    });
+  }
+
+  getCardsByCompany() {
+    this.auth.getUser().subscribe(user => {
+      this.businessCards = this.db
+        .collection(`users/${user.uid}/businessCards`, ref =>
+          ref.where("company", "==", this.companySearch.value.companyName)
         )
         .valueChanges({ idField: "customIdName" });
     });

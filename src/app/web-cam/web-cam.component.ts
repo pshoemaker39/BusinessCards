@@ -19,6 +19,7 @@ export class WebCamComponent implements OnInit {
   url = `https://vision.googleapis.com/v1/images:annotate?key=${environment.cloudVisionAPIKey}`;
   rawCardBody: string = null;
   parsedBody: any = {};
+  imageURL: string = null;
 
   constructor(
     private http: HttpClient,
@@ -46,7 +47,7 @@ export class WebCamComponent implements OnInit {
         this.rawCardBody = JSON.stringify(
           results.responses[0].fullTextAnnotation.text
         );
-        console.log(this.rawCardBody);
+
         this.parsedBody.phone = this.rawCardBody.match(
           /((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}/
         );
@@ -71,6 +72,7 @@ export class WebCamComponent implements OnInit {
         this.parsedBody.city = "";
         this.parsedBody.state = "";
         this.parsedBody.postalCode = "";
+        this.parsedBody.imageURL = this.imageURL;
 
         this.businessCardService.addCard(this.parsedBody, id => {
           this.router.navigate(["/new", id]);
@@ -88,6 +90,7 @@ export class WebCamComponent implements OnInit {
 
   public handleImage(webcamImage: WebcamImage): void {
     this.webcamImage = webcamImage;
+    this.imageURL = webcamImage.imageAsDataUrl;
     this.base64 = webcamImage.imageAsBase64.replace(
       /^data:image\/(png|jpg|jpeg);base64,/,
       ""

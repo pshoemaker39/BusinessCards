@@ -85,6 +85,22 @@
           <mat-form-field class="full-width">
             <textarea
               matInput
+              placeholder="Image URL"
+              formControlName="imageURL"
+            ></textarea>
+            <mat-error
+              *ngIf="businessCard.controls['imageURL'].hasError('required')"
+            >
+              Image URL is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <textarea
+              matInput
               placeholder="Address"
               formControlName="address"
             ></textarea>

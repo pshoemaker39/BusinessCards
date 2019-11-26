@@ -26,6 +26,7 @@ export class NewBusinessCardComponent implements OnInit {
     address2: null,
     city: [null],
     state: [null],
+    imageURL: [null],
     postalCode: [
       null,
       Validators.compose([
@@ -133,6 +134,7 @@ export class NewBusinessCardComponent implements OnInit {
     this.businessCard.controls["city"].setValue(data.city);
     this.businessCard.controls["state"].setValue(data.state);
     this.businessCard.controls["postalCode"].setValue(data.postalCode);
+    this.businessCard.controls["imageURL"].setValue(data.imageURL);
   }
 
   editCard(id) {

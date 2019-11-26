@@ -1,5 +1,32 @@
+<div class="row">
+  <form [formGroup]="nameSearch" novalidate (ngSubmit)="getCardsByName()">
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        placeholder="Person to search"
+        formControlName="personName"
+      />
+    </mat-form-field>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </mat-card-actions>
+  </form>
+  <form [formGroup]="companySearch" novalidate (ngSubmit)="getCardsByCompany()">
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        placeholder="Company to search"
+        formControlName="companyName"
+      />
+    </mat-form-field>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </mat-card-actions>
+  </form>
+</div>
 <ng-container>
-  <button (click)="getCardsByName()">Get Only Price</button>
   <div *ngFor="let card of businessCards | async">
     <ul>
       <li><a [routerLink]="['/new', card.customIdName]">EDIT</a></li>
@@ -10,6 +37,7 @@
       <li>Last Name: {{ card.lastName }}</li>
       <li>Phone: {{ card.phone }}</li>
       <li>Email: {{ card.email }}</li>
+      <li><img src="{{ card.imageURL }}" /></li>
       <li>
         Street Address: {{ card.address }} City: {{ card.city }} State:
         {{ card.state }}
