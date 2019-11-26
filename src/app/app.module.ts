@@ -40,6 +40,7 @@ import { MatSortModule } from "@angular/material/sort";
 import { from } from "rxjs";
 import { AuthServiceService } from "./auth-service.service";
 import { WebcamModule } from "ngx-webcam";
+import { AuthGuard } from "./auth-gaurd";
 
 @NgModule({
   declarations: [
@@ -76,7 +77,7 @@ import { WebcamModule } from "ngx-webcam";
     WebcamModule,
     HttpClientModule
   ],
-  providers: [BusinessCardService, AuthServiceService],
+  providers: [BusinessCardService, AuthServiceService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

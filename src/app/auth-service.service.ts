@@ -18,6 +18,8 @@ import { $ } from "protractor";
 export class AuthServiceService {
   user$: Observable<User>;
   uid: string;
+  email: string;
+  password: string;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -58,6 +60,22 @@ export class AuthServiceService {
     };
     this.uid = data.uid;
     return userRef.set(data, { merge: true });
+  }
+
+  async signIn(email: string, password: string) {
+    const credential = await this.afAuth.auth.signInWithEmailAndPassword(
+      email,
+      password
+    );
+    return this.updateUserData(credential.user);
+  }
+
+  async createAccount(email: string, password: string) {
+    const credential = await this.afAuth.auth.createUserWithEmailAndPassword(
+      email,
+      password
+    );
+    return this.updateUserData(credential.user);
   }
 
   async signOut() {

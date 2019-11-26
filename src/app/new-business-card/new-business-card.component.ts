@@ -138,7 +138,6 @@ export class NewBusinessCardComponent implements OnInit {
   }
 
   editCard(id) {
-    const that = this;
     this.auth.getUser().subscribe(user => {
       this.db
         .collection(`users/${user.uid}/businessCards`)

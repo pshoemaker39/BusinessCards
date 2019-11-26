@@ -8,15 +8,16 @@ import { NewBusinessCardComponent } from "./new-business-card/new-business-card.
 import { BusinessCardsComponent } from "./business-cards/business-cards.component";
 import { WebCamComponent } from "./web-cam/web-cam.component";
 import { TestTableComponent } from "./test-table/test-table.component";
+import { AuthGuard } from "./auth-gaurd";
 
 const routes: Routes = [
   { path: "home", component: HomeComponent },
   { path: "login", component: LoginComponent },
-  { path: "new", component: NewBusinessCardComponent },
-  { path: "new/:id", component: NewBusinessCardComponent },
-  { path: "cam", component: WebCamComponent },
-  { path: "cards", component: BusinessCardsComponent },
-  { path: "search", component: BusinessCardsComponent },
+  { path: "new", component: NewBusinessCardComponent, canActivate: [AuthGuard]  },
+  { path: "new/:id", component: NewBusinessCardComponent, canActivate: [AuthGuard]  },
+  { path: "cam", component: WebCamComponent, canActivate: [AuthGuard] },
+  { path: "cards", component: BusinessCardsComponent, canActivate: [AuthGuard]  },
+  { path: "search", component: BusinessCardsComponent, canActivate: [AuthGuard]  },
   { path: "test", component: TestTableComponent },
   { path: "**", redirectTo: "/home" }
 ];
