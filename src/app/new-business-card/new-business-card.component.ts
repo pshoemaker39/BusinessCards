@@ -1,14 +1,21 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { BusinessCardService } from "../business-card.service";
+import { ActivatedRoute } from "@angular/router";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { Observable } from "rxjs";
+import { AuthServiceService } from "../auth-service.service";
 
 @Component({
   selector: "app-new-business-card",
   templateUrl: "./new-business-card.component.html",
   styleUrls: ["./new-business-card.component.scss"]
 })
-export class NewBusinessCardComponent {
+export class NewBusinessCardComponent implements OnInit {
+  id: string;
+  db: AngularFirestore;
   businessCard = this.fb.group({
+    id: null,
     company: null,
     position: [null, Validators.required],
     firstName: [null, Validators.required],
@@ -93,15 +100,51 @@ export class NewBusinessCardComponent {
 
   constructor(
     private fb: FormBuilder,
-    private businessCardService: BusinessCardService
-  ) {}
+    private businessCardService: BusinessCardService,
+    private route: ActivatedRoute,
+    db: AngularFirestore,
+    private auth: AuthServiceService
+  ) {
+    this.db = db;
+    // this.businessCard.controls["firstName"].setValue("new");
+  }
 
-  onSubmit() {
-    //bc service
-    //route back to home
-    // console.log(this.businessCard.value);
+  onSubmit(id?) {
     this.businessCardService.addCard(this.businessCard.value);
-    // console.log(`cards: ${this.businessCardService.getCards()}`);
-    // alert("Thanks!");
+  }
+
+  setValues(data, id) {
+    this.businessCard.controls["id"].setValue(id);
+    this.businessCard.controls["company"].setValue(data.company);
+    this.businessCard.controls["position"].setValue(data.position);
+    this.businessCard.controls["firstName"].setValue(data.firstName);
+    this.businessCard.controls["lastName"].setValue(data.lastName);
+    this.businessCard.controls["address"].setValue(data.address);
+    this.businessCard.controls["address2"].setValue(data.address2);
+    this.businessCard.controls["city"].setValue(data.city);
+    this.businessCard.controls["state"].setValue(data.state);
+    this.businessCard.controls["postalCode"].setValue(data.postalCode);
+  }
+
+  editCard(id) {
+    this.auth.getUser().subscribe(user => {
+      this.db
+        .collection(`users/${user.uid}/businessCards`)
+        .doc(id)
+        .ref.get()
+        .then(doc => {
+          if (doc.exists) {
+            return doc.data();
+          }
+        })
+        .then(data => this.setValues(data, id));
+    });
+  }
+
+  ngOnInit() {
+    this.id = this.route.snapshot.paramMap.get("id");
+    if (this.id) {
+      this.editCard(this.id);
+    }
   }
 }

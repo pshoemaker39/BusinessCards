@@ -1,6 +1,8 @@
 <ng-container>
-  <div *ngFor="let card of businessCards">
+  <button (click)="getCardsByName()">Get Only Price</button>
+  <div *ngFor="let card of businessCards | async">
     <ul>
+      <li><a [routerLink]="['/new', card.customIdName]">EDIT</a></li>
       <li>Company: {{ card.company }}</li>
       <li>Position: {{ card.position }}</li>
       <li>First Name: {{ card.firstName }}</li>

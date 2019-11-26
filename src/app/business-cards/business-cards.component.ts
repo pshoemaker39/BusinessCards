@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { BusinessCardService } from "../business-card.service";
 import { BusinessCard } from "../models/businessCard.model";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { Observable } from "rxjs";
+import { AuthServiceService } from "../auth-service.service";
 
 @Component({
   selector: "app-business-cards",
@@ -8,13 +11,31 @@ import { BusinessCard } from "../models/businessCard.model";
   styleUrls: ["./business-cards.component.scss"]
 })
 export class BusinessCardsComponent implements OnInit {
-  businessCards: BusinessCard[];
+  businessCards: Observable<any[]>;
+  db: AngularFirestore;
 
-  constructor(private businessCardService: BusinessCardService) {}
+  constructor(db: AngularFirestore, private auth: AuthServiceService) {
+    this.db = db;
+    this.auth.getUser().subscribe(user => {
+      this.businessCards = this.db
+        .collection(`users/${user.uid}/businessCards`)
+        .valueChanges({idField: 'customIdName'});
+    });
+  }
+
+  getCardsByName() {
+    this.auth.getUser().subscribe(user => {
+      this.businessCards = this.db
+        .collection(`users/${user.uid}/businessCards`, ref =>
+          ref.where("firstName", "==", "Price")
+        )
+        .valueChanges({idField: 'customIdName'});
+    });
+  }
+
+  ngOnDestroy() {}
 
   ngOnInit() {
-    this.businessCardService.getCards(data => {
-      this.businessCards = data;
-    });
+    console.log(this.businessCards);
   }
 }

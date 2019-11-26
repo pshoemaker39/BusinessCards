@@ -26,13 +26,25 @@ export class BusinessCardService {
     private auth: AuthServiceService
   ) {}
 
-  confirmUID() {}
   addCard(businessCardData) {
-    this.auth.getUser().subscribe(user => {
-      this.afs
-        .collection(`users/${user.uid}/businessCards`)
-        .add(businessCardData);
-    });
+    // const cardId = id;
+    if (businessCardData.id) {
+      this.auth.getUser().subscribe(user => {
+        const businessCardRef: AngularFirestoreDocument<BusinessCard> = this.afs.doc(
+          `users/${user.uid}/businessCards/${businessCardData.id}`
+        );
+
+        businessCardRef.set(businessCardData, { merge: true });
+      });
+    } else {
+      this.auth.getUser().subscribe(user => {
+        this.afs
+          .collection(`users/${user.uid}/businessCards`)
+          .add(businessCardData);
+      });
+    }
+
+    //route back to list
   }
 
   getCards(cb) {
@@ -46,35 +58,3 @@ export class BusinessCardService {
     });
   }
 }
-
-// createCard({
-//   uid,
-//   company,
-//   position,
-//   firstName,
-//   lastName,
-//   address,
-//   address2,
-//   city,
-//   state,
-//   postalCode
-// }: BusinessCard) {
-//   const businessCardRef: AngularFirestoreDocument<BusinessCard> = this.afs.doc(
-//     `cards`
-//   );
-
-//   const data = {
-//     uid,
-//     company,
-//     position,
-//     firstName,
-//     lastName,
-//     address,
-//     address2,
-//     city,
-//     state,
-//     postalCode
-//   };
-
-//   return businessCardRef.set(data, { merge: true });
-// }

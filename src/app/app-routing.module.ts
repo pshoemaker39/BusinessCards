@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: "home", component: HomeComponent },
   { path: "login", component: LoginComponent },
   { path: "new", component: NewBusinessCardComponent },
+  { path: "new/:id", component: NewBusinessCardComponent },
   { path: "cards", component: BusinessCardsComponent },
   { path: "search", component: BusinessCardsComponent },
   { path: "test", component: TestTableComponent },
