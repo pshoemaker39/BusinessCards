@@ -5,5 +5,10 @@
     [trigger]="triggerObservable"
     (imageCapture)="handleImage($event)"
   ></webcam>
-  <button class="actionBtn" (click)="triggerSnapshot()">Capture Card</button>
+  <br />
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="triggerSnapshot()">
+      Capture Card
+    </button>
+  </mat-card-actions>
 </div>
