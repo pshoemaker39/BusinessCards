@@ -3,10 +3,13 @@
   <div *ngFor="let card of businessCards | async">
     <ul>
       <li><a [routerLink]="['/new', card.customIdName]">EDIT</a></li>
+      <li><button (click)="deleteCard(card.customIdName)">Delete</button></li>
       <li>Company: {{ card.company }}</li>
       <li>Position: {{ card.position }}</li>
       <li>First Name: {{ card.firstName }}</li>
       <li>Last Name: {{ card.lastName }}</li>
+      <li>Phone: {{ card.phone }}</li>
+      <li>Email: {{ card.email }}</li>
       <li>
         Street Address: {{ card.address }} City: {{ card.city }} State:
         {{ card.state }}

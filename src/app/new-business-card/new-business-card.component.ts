@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { BusinessCardService } from "../business-card.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 import { AuthServiceService } from "../auth-service.service";
@@ -17,13 +17,15 @@ export class NewBusinessCardComponent implements OnInit {
   businessCard = this.fb.group({
     id: null,
     company: null,
-    position: [null, Validators.required],
-    firstName: [null, Validators.required],
-    lastName: [null, Validators.required],
-    address: [null, Validators.required],
+    position: [null],
+    firstName: [null],
+    lastName: [null],
+    phone: [null],
+    email: [null],
+    address: [null],
     address2: null,
-    city: [null, Validators.required],
-    state: [null, Validators.required],
+    city: [null],
+    state: [null],
     postalCode: [
       null,
       Validators.compose([
@@ -103,14 +105,19 @@ export class NewBusinessCardComponent implements OnInit {
     private businessCardService: BusinessCardService,
     private route: ActivatedRoute,
     db: AngularFirestore,
-    private auth: AuthServiceService
+    private auth: AuthServiceService,
+    private router: Router
   ) {
     this.db = db;
     // this.businessCard.controls["firstName"].setValue("new");
   }
 
-  onSubmit(id?) {
-    this.businessCardService.addCard(this.businessCard.value);
+  onSubmit() {
+    this.router.navigate(["cards"]);
+    this.businessCardService.addCard(this.businessCard.value, id => {
+      console.log(`cardId: ${id}`);
+      this.router.navigate(["cards"]);
+    });
   }
 
   setValues(data, id) {
@@ -119,6 +126,8 @@ export class NewBusinessCardComponent implements OnInit {
     this.businessCard.controls["position"].setValue(data.position);
     this.businessCard.controls["firstName"].setValue(data.firstName);
     this.businessCard.controls["lastName"].setValue(data.lastName);
+    this.businessCard.controls["phone"].setValue(data.phone);
+    this.businessCard.controls["email"].setValue(data.email);
     this.businessCard.controls["address"].setValue(data.address);
     this.businessCard.controls["address2"].setValue(data.address2);
     this.businessCard.controls["city"].setValue(data.city);
@@ -127,6 +136,7 @@ export class NewBusinessCardComponent implements OnInit {
   }
 
   editCard(id) {
+    const that = this;
     this.auth.getUser().subscribe(user => {
       this.db
         .collection(`users/${user.uid}/businessCards`)

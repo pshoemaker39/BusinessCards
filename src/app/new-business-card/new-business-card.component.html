@@ -53,6 +53,38 @@
           <mat-form-field class="full-width">
             <textarea
               matInput
+              placeholder="Email"
+              formControlName="email"
+            ></textarea>
+            <mat-error
+              *ngIf="businessCard.controls['email'].hasError('required')"
+            >
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <textarea
+              matInput
+              placeholder="Phone"
+              formControlName="phone"
+            ></textarea>
+            <mat-error
+              *ngIf="businessCard.controls['phone'].hasError('required')"
+            >
+              Phone is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <textarea
+              matInput
               placeholder="Address"
               formControlName="address"
             ></textarea>

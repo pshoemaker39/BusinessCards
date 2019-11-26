@@ -1,7 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { Subject } from "rxjs-compat/Subject";
 import { Observable } from "rxjs-compat/Observable";
-import { WebcamImage, WebcamInitError, WebcamUtil } from "ngx-webcam";
+import { WebcamImage } from "ngx-webcam";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "src/environments/environment";
+import { BusinessCardService } from "../business-card.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-web-cam",
@@ -9,11 +13,70 @@ import { WebcamImage, WebcamInitError, WebcamUtil } from "ngx-webcam";
   styleUrls: ["./web-cam.component.scss"]
 })
 export class WebCamComponent implements OnInit {
-  private trigger: Subject<void> = new Subject<void>();
-  public webcamImage: WebcamImage = null;
-  public base64: string = null;
+  trigger: Subject<void> = new Subject<void>();
+  webcamImage: WebcamImage = null;
+  base64: string = null;
+  url = `https://vision.googleapis.com/v1/images:annotate?key=${environment.cloudVisionAPIKey}`;
+  rawCardBody: string = null;
+  parsedBody: any = {};
 
-  constructor() {}
+  constructor(
+    private http: HttpClient,
+    private businessCardService: BusinessCardService,
+    private router: Router
+  ) {}
+
+  private cloudVisionSubmit() {
+    this.http
+      .post(this.url, {
+        requests: [
+          {
+            image: {
+              content: this.base64
+            },
+            features: [
+              {
+                type: "TEXT_DETECTION"
+              }
+            ]
+          }
+        ]
+      })
+      .subscribe((results: any) => {
+        this.rawCardBody = JSON.stringify(
+          results.responses[0].fullTextAnnotation.text
+        );
+        console.log(this.rawCardBody);
+        this.parsedBody.phone = this.rawCardBody.match(
+          /((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}/
+        );
+
+        if (this.parsedBody.phone && this.parsedBody.phone.length) {
+          this.parsedBody.phone = this.parsedBody.phone[0];
+        }
+        this.parsedBody.email = this.rawCardBody.match(
+          /[a-zA-Z0-9-_.]+@[a-zA-Z0-9-_.]+/
+        );
+
+        if (this.parsedBody.email && this.parsedBody.email.length) {
+          this.parsedBody.email = this.parsedBody.email[0];
+        }
+
+        this.parsedBody.company = "";
+        this.parsedBody.position = "";
+        this.parsedBody.firstName = "";
+        this.parsedBody.lastName = "";
+        this.parsedBody.address = "";
+        this.parsedBody.address2 = "";
+        this.parsedBody.city = "";
+        this.parsedBody.state = "";
+        this.parsedBody.postalCode = "";
+
+        this.businessCardService.addCard(this.parsedBody, id => {
+          this.router.navigate(["/new", id]);
+        });
+      });
+  }
 
   public triggerSnapshot(): void {
     this.trigger.next();
@@ -24,13 +87,12 @@ export class WebCamComponent implements OnInit {
   }
 
   public handleImage(webcamImage: WebcamImage): void {
-    //console.info("received webcam image", webcamImage);
     this.webcamImage = webcamImage;
     this.base64 = webcamImage.imageAsBase64.replace(
       /^data:image\/(png|jpg|jpeg);base64,/,
       ""
     );
-    console.log(this.base64);
+    this.cloudVisionSubmit();
   }
 
   public createFromImage() {}

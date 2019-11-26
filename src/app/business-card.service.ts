@@ -26,8 +26,7 @@ export class BusinessCardService {
     private auth: AuthServiceService
   ) {}
 
-  addCard(businessCardData) {
-    // const cardId = id;
+  addCard(businessCardData, cb?) {
     if (businessCardData.id) {
       this.auth.getUser().subscribe(user => {
         const businessCardRef: AngularFirestoreDocument<BusinessCard> = this.afs.doc(
@@ -40,7 +39,10 @@ export class BusinessCardService {
       this.auth.getUser().subscribe(user => {
         this.afs
           .collection(`users/${user.uid}/businessCards`)
-          .add(businessCardData);
+          .add(businessCardData)
+          .then(docRef => {
+            cb(docRef.id);
+          });
       });
     }
 

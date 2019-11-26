@@ -19,7 +19,7 @@ export class BusinessCardsComponent implements OnInit {
     this.auth.getUser().subscribe(user => {
       this.businessCards = this.db
         .collection(`users/${user.uid}/businessCards`)
-        .valueChanges({idField: 'customIdName'});
+        .valueChanges({ idField: "customIdName" });
     });
   }
 
@@ -29,13 +29,28 @@ export class BusinessCardsComponent implements OnInit {
         .collection(`users/${user.uid}/businessCards`, ref =>
           ref.where("firstName", "==", "Price")
         )
-        .valueChanges({idField: 'customIdName'});
+        .valueChanges({ idField: "customIdName" });
+    });
+  }
+
+  deleteCard(id) {
+    this.auth.getUser().subscribe(user => {
+      this.db
+        .collection("users")
+        .doc(user.uid)
+        .collection("businessCards")
+        .doc(id)
+        .delete()
+        .then(function() {
+          console.log("Document successfully deleted!");
+        })
+        .catch(function(error) {
+          console.error("Error removing document: ", error);
+        });
     });
   }
 
   ngOnDestroy() {}
 
-  ngOnInit() {
-    console.log(this.businessCards);
-  }
+  ngOnInit() {}
 }
