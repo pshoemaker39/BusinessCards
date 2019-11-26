@@ -6,9 +6,7 @@ import {
   AngularFirestoreCollection,
   AngularFirestoreDocument
 } from "@angular/fire/firestore";
-import { Observable, of } from "rxjs";
-import { switchMap } from "rxjs/operators";
-import { Router } from "@angular/router";
+import { Observable } from "rxjs";
 import { User } from "./models/user.model";
 import { AuthServiceService } from "./auth-service.service";
 
@@ -22,41 +20,25 @@ export class BusinessCardService {
 
   constructor(
     private afs: AngularFirestore,
-    private router: Router,
     private auth: AuthServiceService
   ) {}
 
   addCard(businessCardData, cb?) {
     if (businessCardData.id) {
-      this.auth.getUser().subscribe(user => {
-        const businessCardRef: AngularFirestoreDocument<BusinessCard> = this.afs.doc(
-          `users/${user.uid}/businessCards/${businessCardData.id}`
-        );
+      const uid = this.auth.getUser();
+      const businessCardRef: AngularFirestoreDocument<BusinessCard> = this.afs.doc(
+        `users/${uid}/businessCards/${businessCardData.id}`
+      );
 
-        businessCardRef.set(businessCardData, { merge: true });
-      });
+      businessCardRef.set(businessCardData, { merge: true });
     } else {
-      this.auth.getUser().subscribe(user => {
-        this.afs
-          .collection(`users/${user.uid}/businessCards`)
-          .add(businessCardData)
-          .then(docRef => {
-            cb(docRef.id);
-          });
-      });
-    }
-
-    //route back to list
-  }
-
-  getCards(cb) {
-    this.auth.getUser().subscribe(user => {
+      const uid = this.auth.getUser();
       this.afs
-        .collection(`users/${user.uid}/businessCards`)
-        .valueChanges()
-        .subscribe(cards => {
-          cb(cards);
+        .collection(`users/${uid}/businessCards`)
+        .add(businessCardData)
+        .then(docRef => {
+          cb(docRef.id);
         });
-    });
+    }
   }
 }

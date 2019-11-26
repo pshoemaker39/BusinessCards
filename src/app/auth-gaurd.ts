@@ -13,18 +13,13 @@ import { truncate } from "fs";
 export class AuthGuard implements CanActivate {
   constructor(private auth: AuthServiceService, public router: Router) {}
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    return this.auth.getUser().subscribe(user => {
-      if (user && user.uid) {
-        console.log("UID EXISTS");
-        this.router.navigate(["cards"]);
-        return true;
-      } else {
-        console.log("UID DNE");
-        this.router.navigate(["home"]);
-        return false;
-      }
-    });
-    //return false;
+  canActivate(next: ActivatedRouteSnapshot) {
+    if (this.auth.getUser()) {
+      next;
+      return true;
+    }
+    console.log("UID DNE");
+    this.router.navigate(["home"]);
+    return false;
   }
 }

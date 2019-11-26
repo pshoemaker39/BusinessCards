@@ -1,4 +1,9 @@
-<webcam
-[height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
-></webcam>
-<button class="actionBtn" (click)="triggerSnapshot()">Take A Snapshot</button>
+<div flex="" layout="row" layout-align="center center">
+  <webcam
+    [height]="500"
+    [width]="500"
+    [trigger]="triggerObservable"
+    (imageCapture)="handleImage($event)"
+  ></webcam>
+  <button class="actionBtn" (click)="triggerSnapshot()">Capture Card</button>
+</div>

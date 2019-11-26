@@ -138,18 +138,17 @@ export class NewBusinessCardComponent implements OnInit {
   }
 
   editCard(id) {
-    this.auth.getUser().subscribe(user => {
-      this.db
-        .collection(`users/${user.uid}/businessCards`)
-        .doc(id)
-        .ref.get()
-        .then(doc => {
-          if (doc.exists) {
-            return doc.data();
-          }
-        })
-        .then(data => this.setValues(data, id));
-    });
+    const uid = this.auth.getUser();
+    this.db
+      .collection(`users/${uid}/businessCards`)
+      .doc(id)
+      .ref.get()
+      .then(doc => {
+        if (doc.exists) {
+          return doc.data();
+        }
+      })
+      .then(data => this.setValues(data, id));
   }
 
   ngOnInit() {

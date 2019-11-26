@@ -30,6 +30,7 @@ export class AuthServiceService {
       switchMap(user => {
         if (user) {
           this.uid = user.uid;
+          localStorage.setItem("uid", user.uid);
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null);
@@ -39,8 +40,7 @@ export class AuthServiceService {
   }
 
   getUser() {
-    //return this.uid;
-    return this.user$;
+    return localStorage.getItem("uid");
   }
 
   async googleSignIn() {
@@ -59,6 +59,7 @@ export class AuthServiceService {
       email
     };
     this.uid = data.uid;
+    localStorage.setItem("uid", uid);
     return userRef.set(data, { merge: true });
   }
 
@@ -79,7 +80,8 @@ export class AuthServiceService {
   }
 
   async signOut() {
+    localStorage.removeItem("uid");
     await this.afAuth.auth.signOut();
-    this.router.navigate(["/"]);
+    this.router.navigate(["home"]);
   }
 }

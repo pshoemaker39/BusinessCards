@@ -17,8 +17,6 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
-    db: AngularFirestore,
     private auth: AuthServiceService,
     private router: Router
   ) {}
@@ -35,6 +33,7 @@ export class HomeComponent implements OnInit {
       this.creds.controls.email.value,
       this.creds.controls.password.value
     );
+    this.router.navigate(["cards"]);
   }
 
   ngOnInit() {}
