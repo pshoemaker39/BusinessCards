@@ -27,6 +27,9 @@
       </button>
     </ng-template>
     <ng-template #login>
+      <button mat-button [routerLink]="['home']" routerLinkActive="active">
+        Login With Course Credentials
+      </button>
       <button mat-button [routerLink]="['login']" routerLinkActive="active">
         Login With Google
       </button>

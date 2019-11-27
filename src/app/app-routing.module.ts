@@ -37,7 +37,6 @@ const routes: Routes = [
   },
   { path: "test", component: TestTableComponent },
   { path: "error", component: NotFoundComponent },
-  // { path: "/", redirectTo: "/home" },
   { path: "**", redirectTo: "/home" }
 ];
 
